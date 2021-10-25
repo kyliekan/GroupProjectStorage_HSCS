@@ -2,9 +2,23 @@ import java.util.*;
 
 public class HangmanManager
 {
-	public HangmanManager( List<String> dictionary, int length, int max )
+	Set<Character> guesses;
+	int len; int maxGuesses;
+	List<String> dict;
+	
+	public HangmanManager( List<String> dictionary, int length, int max ) throws IllegalArgumentException
 	{
-		yo
+		if(length < 1) {
+			throw new IllegalArgumentException("Length cannot be less than 1.");
+		}
+		if(max < 0) {
+			throw new IllegalArgumentException("Max cannot be less than 0.");
+		}
+		else {
+			maxGuesses = max;
+			len = length;
+			dict = dictionary;
+		}
 	}
 	
 	public Set<String> words()
