@@ -4,7 +4,7 @@ public class HangmanManager
 {
 	public HangmanManager( List<String> dictionary, int length, int max )
 	{
-		
+		yo
 	}
 	
 	public Set<String> words()
