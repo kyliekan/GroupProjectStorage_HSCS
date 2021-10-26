@@ -2,9 +2,9 @@ import java.util.*;
 
 public class HangmanManager
 {
-	Set<Character> guesses;
-	int len; int maxGuesses;
-	List<String> dict;
+	Set<Character> allGuesses;
+	int len; int maxGuesses; int guesses;
+	Set<String> dict;
 	
 	public HangmanManager( List<String> dictionary, int length, int max ) throws IllegalArgumentException
 	{
@@ -17,23 +17,24 @@ public class HangmanManager
 		else {
 			maxGuesses = max;
 			len = length;
-			dict = dictionary;
+			
 		}
 	}
 	
 	public Set<String> words()
 	{
-		return null;
+		HashSet<String> map = new HashSet<String>(dict);
+		return map;
 	}	
 	
 	public int guessesLeft()
 	{
-		return 0;
+		return guesses;
 	}
 		
 	public Set<Character> guesses()
 	{
-		return null;
+		return allGuesses;
 	}
 	
 	public String pattern()
