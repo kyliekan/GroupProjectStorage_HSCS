@@ -3,6 +3,7 @@ import java.util.*;
 public class HangmanManager
 {
 	Set<Character> allGuesses;
+	HashSet<String> set;
 	int len; int maxGuesses; int guesses;
 	List<String> dict;
 	String pattern;
@@ -23,12 +24,13 @@ public class HangmanManager
 			
 			for(int i = 0; i < length; i++) 
 				pattern += "-";
+			
+			set = new HashSet<String>();
 		}
 	}
 	
 	public Set<String> words()
 	{
-		HashSet<String> set = new HashSet<String>(dict);
 		return set;
 	}	
 	
@@ -44,7 +46,8 @@ public class HangmanManager
 	
 	public String pattern()
 	{
-		
+		if(set.isEmpty())
+			throw new IllegalStateException("Word set cannot be empty."); 
 		return pattern;
 	}
 	
