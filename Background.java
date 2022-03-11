@@ -7,40 +7,41 @@ import javax.swing.*;
 
 public class Background extends JPanel implements Runnable ,MouseListener, MouseMotionListener
 {
+	int turn;
 	private Image background;
-	Image d1 = Toolkit.getDefaultToolkit().getImage("1-die.png");
-    Image d2 = Toolkit.getDefaultToolkit().getImage("2-die.png");
-    Image d3 = Toolkit.getDefaultToolkit().getImage("3-die.png");
-    Image d4 = Toolkit.getDefaultToolkit().getImage("4-die.png");
-    Image d5 = Toolkit.getDefaultToolkit().getImage("5-die.png");
-    Image d6 = Toolkit.getDefaultToolkit().getImage("6-die.png");
-    Image logo = Toolkit.getDefaultToolkit().getImage("logo.jpeg");
+	boolean click;
+	int rolltime;
+	Image d1 = Toolkit.getDefaultToolkit().getImage("d1.png");
+    Image d2 = Toolkit.getDefaultToolkit().getImage("d2.png");
+    Image d3 = Toolkit.getDefaultToolkit().getImage("d3.png");
+    Image d4 = Toolkit.getDefaultToolkit().getImage("d4.png");
+    Image d5 = Toolkit.getDefaultToolkit().getImage("d5.png");
+    Image d6 = Toolkit.getDefaultToolkit().getImage("d6.png");
+    Image logo = Toolkit.getDefaultToolkit().getImage("logo.gif");
+    Image n1 = Toolkit.getDefaultToolkit().getImage("one.png");
+    Image n2 = Toolkit.getDefaultToolkit().getImage("two.png");
+    Image n3 = Toolkit.getDefaultToolkit().getImage("three.png");
+    Image n4 = Toolkit.getDefaultToolkit().getImage("four.png");
+    Image ctrlz = Toolkit.getDefaultToolkit().getImage("ctrlz.png");
     public int width;
     public int height;
     public int r = 1;
+    public int n = 1;
     Graphics2D g2;
-	
+	public Background() {
+				addMouseListener(this); /*YOU MUST have this in the constructor of a MouseListener*/
+				addMouseMotionListener(this); /*YOU MUST have this in the constructor of a MouseMotionListener*/
+				new Thread(this).start(); /*You have to start a new Thread in a Runnable */
+	}
 	public void paintComponent( Graphics window )
 	{
-
-		//this allows us to put a png,jpg, or gif
-		addMouseListener(this); /*YOU MUST have this in the constructor of a MouseListener*/
-		addMouseMotionListener(this); /*YOU MUST have this in the constructor of a MouseMotionListener*/
-		new Thread(this).start(); /*You have to start a new Thread in a Runnable */
-		
 		g2 = (Graphics2D) window;
-    	background = Toolkit.getDefaultToolkit().getImage("chutes.jpg"); /*the image cannot be in the SRC folder*/
-    	
+    	background = Toolkit.getDefaultToolkit().getImage("chutes.png"); /*the image cannot be in the SRC folder*/
     	width = this.getSize().width;
-    	height = this.getSize().height;
-    	//int width = this.getSize().width;
-        //int height = this.getSize().height;
-        
+    	height = this.getSize().height;      
         g2.setColor(new Color(227, 214, 165));
         g2.fillRect(0, 0, width, height);
         g2.setColor(Color.BLACK);
-        
-        
         if(r == 1) 
 			 g2.drawImage(d1, (width / 5) / 3, height - (height / 4), width/12, height / 10, this);
 			
@@ -59,32 +60,41 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 		if(r == 6)
 			 g2.drawImage(d6, (width / 5) / 3, height - (height / 4), width/12, height / 10, this);
 		
+		if(n == 1) {
+			g2.drawImage(n1, (width / 5) / 3, height - (height / 2), width/12, height / 10, this);
+		}
+		if(n == 2) {
+			g2.drawImage(n2, (width / 5) / 3, height - (height / 2), width/12, height / 10, this);
+		}
+		if(n == 3) {
+			g2.drawImage(n3, (width / 5) / 3, height - (height / 2), width/12, height / 10, this);
+		}
+		if(n == 4) {
+			g2.drawImage(n4, (width / 5) / 3, height - (height / 2), width/12, height / 10, this);
+		}
         float thickness = 2 + width/600;
         Stroke oldStroke = g2.getStroke();
         g2.setStroke(new BasicStroke(thickness));
         g2.drawRoundRect((width / 5) / 3, height - (height / 4), width/12, height / 10, 14, 14);
+        g2.drawRoundRect((width / 5) / 3, height - (height / 2), width/12, height / 10, 14, 14);
         g2.setStroke(oldStroke);
-        
+        g2.drawImage(ctrlz, (width / 4) / 5, height - (height/8), width/8, height / 10, this);
         g2.drawImage(logo, 0, 0, width / 5, height / 4, this); 
         g2.drawImage(background, width/5, 0, width - (width / 5), height, this); 
-        
-       
     }
 	
 	public void roll() {
 		r = (int) (Math.random() * 6) + 1;
-		repaint();
-	}
-	
-	
-	/*1 mousePressed -- when mouse button is pressed*/
+		}
 	public void mousePressed(MouseEvent e) {
 		if( e.getButton() == 1) {
+			
 			int x = e.getX();
 			int y = e.getY();
 			if(x < (((width / 5) / 3) + (width / 12)) && x > ((width / 5) / 3)) {
 				if(y < ((height - (height / 4)) + (height / 10)) && y > (height - (height / 4))) {
-					this.roll();
+					click = true;
+					rolltime =(int) (Math.random() * 12) + 7;
 				}
 			}
 		}
@@ -96,12 +106,8 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 	/*4 mouseExited -- when the mouse exits the window*/
 	public void mouseExited(MouseEvent e) { }
 	/*5 mouseClicked -- when the mouse button is pressed and released*/
-	public void mouseClicked(MouseEvent e) { 
-		
-		
-	}
-
-/*You MUST have these 2 methods in a MouseMotionListener*/
+	public void mouseClicked(MouseEvent e) { }
+	/*You MUST have these 2 methods in a MouseMotionListener*/
 	/*1 mouseDragged -- when a mouse button is pressed and held down and moved*/
 	public void mouseDragged(MouseEvent e){  }
 	/*2 mouseMoved -- when mouse cursor is moved around the window*/
@@ -109,15 +115,22 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
     	 /*this updates the X coordinate of the mouse*/
     	 /*this updates the Y coordinate of the mouse*/
     }
-
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		while(true) {
 			try {
-				Thread.sleep(50);
+				Thread.sleep(75);
+				if(click) {
+					roll();
+					rolltime --;
+					if(rolltime == 0) {
+						click = false;
+					}
+					
+				}
+				repaint();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
