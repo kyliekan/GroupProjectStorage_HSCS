@@ -1,11 +1,13 @@
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 
-public class Background extends JPanel implements Runnable ,MouseListener, MouseMotionListener
+public class Background extends JPanel implements Runnable ,MouseListener, MouseMotionListener, KeyListener
 {
 	int turn;
 	private Image background;
@@ -26,12 +28,16 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
     public int width;
     public int height;
     public int r = 1;
-    public int n = 1;
     Graphics2D g2;
+    Board board;
 	public Background() {
 				addMouseListener(this); /*YOU MUST have this in the constructor of a MouseListener*/
 				addMouseMotionListener(this); /*YOU MUST have this in the constructor of a MouseMotionListener*/
 				new Thread(this).start(); /*You have to start a new Thread in a Runnable */
+				addKeyListener( this ); /*all keyListeners must have this in the constructor*/
+				setFocusable( true );
+				turn = 1;
+				
 	}
 	public void paintComponent( Graphics window )
 	{
@@ -60,16 +66,16 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 		if(r == 6)
 			 g2.drawImage(d6, (width / 5) / 3, height - (height / 4), width/12, height / 10, this);
 		
-		if(n == 1) {
+		if(turn == 1) {
 			g2.drawImage(n1, (width / 5) / 3, height - (height / 2), width/12, height / 10, this);
 		}
-		if(n == 2) {
+		if(turn == 2) {
 			g2.drawImage(n2, (width / 5) / 3, height - (height / 2), width/12, height / 10, this);
 		}
-		if(n == 3) {
+		if(turn == 3) {
 			g2.drawImage(n3, (width / 5) / 3, height - (height / 2), width/12, height / 10, this);
 		}
-		if(n == 4) {
+		if(turn == 4) {
 			g2.drawImage(n4, (width / 5) / 3, height - (height / 2), width/12, height / 10, this);
 		}
         float thickness = 2 + width/600;
@@ -78,10 +84,42 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
         g2.drawRoundRect((width / 5) / 3, height - (height / 4), width/12, height / 10, 14, 14);
         g2.drawRoundRect((width / 5) / 3, height - (height / 2), width/12, height / 10, 14, 14);
         g2.setStroke(oldStroke);
-        g2.drawImage(ctrlz, (width / 4) / 5, height - (height/8), width/8, height / 10, this);
+        //g2.drawImage(ctrlz, (width / 4) / 5, height - (height/8), width/8, height / 10, this);
         g2.drawImage(logo, 0, 0, width / 5, height / 4, this); 
         g2.drawImage(background, width/5, 0, width - (width / 5), height, this); 
+        
+        
+        board = new Board(width,height);
+        board.paintComponent(g2);
+        
+       
     }
+	public void keyTyped(KeyEvent e)
+	{
+	
+	}
+	
+	/*2*/
+	public void keyPressed(KeyEvent e)
+	{
+		if(e.getKeyCode() == KeyEvent.VK_R) {
+			System.out.println("ctrl z");
+		}
+	}
+	
+	/*3*/	
+	public void keyReleased(KeyEvent e)
+	{
+		if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+			turn++;
+			if(turn > 4) {
+				turn = 1;
+			}
+		}
+		
+	}
+
+
 	
 	public void roll() {
 		r = (int) (Math.random() * 6) + 1;
@@ -109,7 +147,9 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 	public void mouseClicked(MouseEvent e) { }
 	/*You MUST have these 2 methods in a MouseMotionListener*/
 	/*1 mouseDragged -- when a mouse button is pressed and held down and moved*/
-	public void mouseDragged(MouseEvent e){  }
+	public void mouseDragged(MouseEvent e){  
+		
+	}
 	/*2 mouseMoved -- when mouse cursor is moved around the window*/
 	public void mouseMoved(MouseEvent e){  		
     	 /*this updates the X coordinate of the mouse*/
@@ -126,8 +166,7 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 					rolltime --;
 					if(rolltime == 0) {
 						click = false;
-					}
-					
+					}	
 				}
 				repaint();
 			} catch (InterruptedException e) {
