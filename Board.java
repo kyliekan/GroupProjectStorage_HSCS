@@ -50,6 +50,30 @@ public void ChangeThree(int w, int h) {
 public void ChangeFour(int w, int h) {
 	w4 = w; h4 = h;
 }
+public int getw1() {
+	return w1;
+}
+public int getw2() {
+	return w2;
+}
+public int getw3() {
+	return w3;
+}
+public int getw4() {
+	return w4;
+}
+public int geth1() {
+	return h1;
+}
+public int geth2() {
+	return h2;
+}
+public int geth3() {
+	return h3;
+}
+public int geth4() {
+	return h4;
+}
 
 
 public void mousePressed(MouseEvent e) { }
