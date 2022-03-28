@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -25,11 +26,14 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
     Image n3 = Toolkit.getDefaultToolkit().getImage("three.png");
     Image n4 = Toolkit.getDefaultToolkit().getImage("four.png");
     Image ctrlz = Toolkit.getDefaultToolkit().getImage("ctrlz.png");
-    public int width;
-    public int height;
+    public int width, savew;
+    public int height, saveh;
     public int r = 1;
     Graphics2D g2;
-    Board board;
+    Board b;
+    boolean hold;
+    int s;
+    boolean start;
 	public Background() {
 				addMouseListener(this); /*YOU MUST have this in the constructor of a MouseListener*/
 				addMouseMotionListener(this); /*YOU MUST have this in the constructor of a MouseMotionListener*/
@@ -37,6 +41,7 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 				addKeyListener( this ); /*all keyListeners must have this in the constructor*/
 				setFocusable( true );
 				turn = 1;
+				start = true;
 				
 	}
 	public void paintComponent( Graphics window )
@@ -44,7 +49,8 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 		g2 = (Graphics2D) window;
     	background = Toolkit.getDefaultToolkit().getImage("chutes.png"); /*the image cannot be in the SRC folder*/
     	width = this.getSize().width;
-    	height = this.getSize().height;      
+    	height = this.getSize().height;  
+    	
         g2.setColor(new Color(227, 214, 165));
         g2.fillRect(0, 0, width, height);
         g2.setColor(Color.BLACK);
@@ -87,12 +93,21 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
         //g2.drawImage(ctrlz, (width / 4) / 5, height - (height/8), width/8, height / 10, this);
         g2.drawImage(logo, 0, 0, width / 5, height / 4, this); 
         g2.drawImage(background, width/5, 0, width - (width / 5), height, this); 
-        
-        
-        board = new Board(width,height);
-        board.paintComponent(g2);
-        
+        if(start) {
+        	 b = new Board(width,height);
+        	 start = false;
+        	 savew = width;
+        	 saveh = height;
+        }
+        if(savew != width || saveh != height) {
+        	System.out.println(b.getw1() + (width - savew) + " dsfsdfsdfds");
+        	 b.ChangeOne(b.getw1() + width - savew,b.geth1());
+        	 savew = width;
+        }
        
+        b.paintComponent(g2);
+        System.out.println(width + " " + height + " \n" + savew + " " + saveh);
+        System.out.println(b.getw1() + " eeeeee");
     }
 	public void keyTyped(KeyEvent e)
 	{
@@ -135,10 +150,26 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 					rolltime =(int) (Math.random() * 12) + 7;
 				}
 			}
+			if(x> (b.getw1()) && x < (b.getw1()+width /10)) {
+				if(y > (b.geth1()) && y < (b.geth1()+height/30)) {
+					hold = true;
+					
+					b.ChangeOne(x,y);
+					x = (int) MouseInfo.getPointerInfo().getLocation().getX();
+					y = (int) MouseInfo.getPointerInfo().getLocation().getY();
+					System.out.println(x);
+					 b.paintComponent(g2);
+					
+				}
+			}
 		}
 	}
 	/*2 mouseReleased -- when mouse button is released*/
-	public void mouseReleased(MouseEvent e) { }
+	public void mouseReleased(MouseEvent e) { 
+		if(e.getButton() == 1) {
+			hold = false;
+		}
+	}
 	/*3 mouseEntered -- when the mouse enters the window */
 	public void mouseEntered(MouseEvent e) { }
 	/*4 mouseExited -- when the mouse exits the window*/
@@ -147,9 +178,7 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 	public void mouseClicked(MouseEvent e) { }
 	/*You MUST have these 2 methods in a MouseMotionListener*/
 	/*1 mouseDragged -- when a mouse button is pressed and held down and moved*/
-	public void mouseDragged(MouseEvent e){  
-		
-	}
+	public void mouseDragged(MouseEvent e){ }
 	/*2 mouseMoved -- when mouse cursor is moved around the window*/
 	public void mouseMoved(MouseEvent e){  		
     	 /*this updates the X coordinate of the mouse*/
