@@ -110,10 +110,24 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
         	 
         }
        if(hold) {
-			b.ChangeOne(mx,my);
+    	   if(turn == 1) {
+    		   b.ChangeOne(mx,my);
+    		   System.out.println("e");
+    	   }
+    	   if(turn == 2) {
+    		   b.ChangeTwo(mx, my);
+    		   System.out.println("ee");
+    	   }
+    	   if(turn == 3) {
+    		   b.ChangeThree(mx, my);
+    		   System.out.println("eee");
+    	   }
+    	   if(turn == 4) {
+    		   b.ChangeFour(mx,my);
+    		   System.out.println("eeee");
+    	   }
 			b.paintComponent(g2);
 			b.repaint();
-			System.out.println("jeld");
         }
         b.paintComponent(g2);
        
@@ -152,14 +166,38 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 		if( e.getButton() == 1) {
 			int x = e.getX();
 			int y = e.getY();
-			if(x < (((width / 5) / 3) + (width / 12)) && x > ((width / 5) / 3)) {
+			if( x < (((width / 5) / 3) + (width / 12)) && x > ((width / 5) / 3)) {
 				if(y < ((height - (height / 4)) + (height / 10)) && y > (height - (height / 4))) {
 					click = true;
 					rolltime =(int) (Math.random() * 12) + 7;
 				}
 			}
-			if(x> (b.getw1()) && x < (b.getw1()+width /10)) {
+			if(turn == 1 && x> (b.getw1()) && x < (b.getw1()+width /10)) {
 				if(y > (b.geth1()) && y < (b.geth1()+height/30)) {
+					hold = true;
+					System.out.println(x);
+					 b.paintComponent(g2);
+					
+				}
+			}
+			if(turn == 2 && x> (b.getw2()) && x < (b.getw2()+width /10)) {
+				if(y > (b.geth2()) && y < (b.geth2()+height/30)) {
+					hold = true;
+					System.out.println(x);
+					 b.paintComponent(g2);
+					
+				}
+			}
+			if(turn == 3 && x> (b.getw3()) && x < (b.getw3()+width /10)) {
+				if(y > (b.geth3()) && y < (b.geth3()+height/30)) {
+					hold = true;
+					System.out.println(x);
+					 b.paintComponent(g2);
+					
+				}
+			}
+			if(turn == 4 && x> (b.getw4()) && x < (b.getw4()+width /10)) {
+				if(y > (b.geth4()) && y < (b.geth4()+height/30)) {
 					hold = true;
 					System.out.println(x);
 					 b.paintComponent(g2);
@@ -174,7 +212,7 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 			hold = false;
 			int x = e.getX();
 			int y = e.getY();
-			b.ChangeOne(x,y);
+			//b.ChangeOne(x,y);
 			
 
 		}
@@ -211,12 +249,7 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 						click = false;
 					}	
 				}  
-				 if(hold) {
-						b.ChangeOne(mx,my);
-						b.paintComponent(g2);
-						
-						System.out.println("jeld");
-				 }
+				
 				 repaint();
 				 Thread.sleep(75);
 				
