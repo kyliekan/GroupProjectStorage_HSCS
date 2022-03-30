@@ -34,6 +34,7 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
     boolean hold;
     int s;
     boolean start;
+    int mx,my;
 	public Background() {
 				addMouseListener(this); /*YOU MUST have this in the constructor of a MouseListener*/
 				addMouseMotionListener(this); /*YOU MUST have this in the constructor of a MouseMotionListener*/
@@ -41,8 +42,7 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 				addKeyListener( this ); /*all keyListeners must have this in the constructor*/
 				setFocusable( true );
 				turn = 1;
-				start = true;
-				
+				start = true;	
 	}
 	public void paintComponent( Graphics window )
 	{
@@ -100,14 +100,23 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
         	 saveh = height;
         }
         if(savew != width || saveh != height) {
-        	System.out.println(b.getw1() + (width - savew) + " dsfsdfsdfds");
-        	 b.ChangeOne(b.getw1() + width - savew,b.geth1());
+        	 b.ChangeOne( width/5 + width/5/20,height - height/10);
+        	 b.ChangeTwo( width/5 + width/5/20,height - height/25);
+        	 b.ChangeThree( width/5 + width/5/5,height - height/10);
+        	 b.ChangeFour( width/5 + width/5/5,height - height/25);
+        	 b.resize(width,height);
         	 savew = width;
+        	 saveh = height;
+        	 
         }
-       
+       if(hold) {
+			b.ChangeOne(mx,my);
+			b.paintComponent(g2);
+			b.repaint();
+			System.out.println("jeld");
+        }
         b.paintComponent(g2);
-        System.out.println(width + " " + height + " \n" + savew + " " + saveh);
-        System.out.println(b.getw1() + " eeeeee");
+       
     }
 	public void keyTyped(KeyEvent e)
 	{
@@ -141,7 +150,6 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 		}
 	public void mousePressed(MouseEvent e) {
 		if( e.getButton() == 1) {
-			
 			int x = e.getX();
 			int y = e.getY();
 			if(x < (((width / 5) / 3) + (width / 12)) && x > ((width / 5) / 3)) {
@@ -153,10 +161,6 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 			if(x> (b.getw1()) && x < (b.getw1()+width /10)) {
 				if(y > (b.geth1()) && y < (b.geth1()+height/30)) {
 					hold = true;
-					
-					b.ChangeOne(x,y);
-					x = (int) MouseInfo.getPointerInfo().getLocation().getX();
-					y = (int) MouseInfo.getPointerInfo().getLocation().getY();
 					System.out.println(x);
 					 b.paintComponent(g2);
 					
@@ -168,6 +172,11 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 	public void mouseReleased(MouseEvent e) { 
 		if(e.getButton() == 1) {
 			hold = false;
+			int x = e.getX();
+			int y = e.getY();
+			b.ChangeOne(x,y);
+			
+
 		}
 	}
 	/*3 mouseEntered -- when the mouse enters the window */
@@ -178,9 +187,14 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 	public void mouseClicked(MouseEvent e) { }
 	/*You MUST have these 2 methods in a MouseMotionListener*/
 	/*1 mouseDragged -- when a mouse button is pressed and held down and moved*/
-	public void mouseDragged(MouseEvent e){ }
+	public void mouseDragged(MouseEvent e){ 	
+	mx = e.getX();
+	my = e.getY();
+	}
 	/*2 mouseMoved -- when mouse cursor is moved around the window*/
-	public void mouseMoved(MouseEvent e){  		
+	public void mouseMoved(MouseEvent e){  
+		mx = e.getX();
+		my = e.getY();
     	 /*this updates the X coordinate of the mouse*/
     	 /*this updates the Y coordinate of the mouse*/
     }
@@ -189,15 +203,23 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
 		// TODO Auto-generated method stub
 		while(true) {
 			try {
-				Thread.sleep(75);
+				
 				if(click) {
 					roll();
 					rolltime --;
 					if(rolltime == 0) {
 						click = false;
 					}	
-				}
-				repaint();
+				}  
+				 if(hold) {
+						b.ChangeOne(mx,my);
+						b.paintComponent(g2);
+						
+						System.out.println("jeld");
+				 }
+				 repaint();
+				 Thread.sleep(75);
+				
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
