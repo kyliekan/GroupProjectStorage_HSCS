@@ -114,6 +114,32 @@ public class Background extends JPanel implements Runnable ,MouseListener, Mouse
        	 savew = width;
        	 saveh = height;
        }
+         
+        if(b.getw1() >= width) {
+    		b.ChangeOne(width - width/50, b.geth1());
+    	}
+    	if(b.geth1() >= height) {
+    		b.ChangeOne(b.getw1(), height - width/50);
+    	}
+    	if(b.getw2() >= width) {
+    		b.ChangeTwo(width - width/50, b.geth2());
+    	}
+    	if(b.geth2() >= height) {
+    		b.ChangeTwo(b.getw2(), height - width/50);
+    	}
+    	if(b.getw3() >= width) {
+    		b.ChangeThree(width - width/50, b.geth3());
+    	}
+    	if(b.geth3() >= height) {
+    		b.ChangeThree(b.getw3(), height - width/50);
+    	}
+    	if(b.getw4() >= width) {
+    		b.ChangeFour(width - width/50, b.geth4());
+    	}
+    	if(b.geth4() >= height) {
+    		b.ChangeFour(b.getw4(), height - width/50);
+    	}
+	
        if(savew != width || saveh != height) {
        	//System.out.println(b.getw1());
        	int ratiow1 = savew * 25 / b.getw1();
